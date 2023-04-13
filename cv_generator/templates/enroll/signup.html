@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sign Up Form</title>
-
     <link rel="stylesheet" href="{% static 'enroll/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
     <link rel="stylesheet" href="{% static 'enroll/css/style.css' %}">
 </head>
@@ -19,41 +18,46 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST" class="register-form" id="registerForm" onsubmit="validate()">
+                        <form method="POST" onsubmit="return validate()" class="register-form" id="registerForm">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="first_name" id="f_name" placeholder="Your First Name" />
-                                <span style="color: red;"></span>
+                                <small style="color: red;" id="error_f_name"></small>
                             </div>
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="last_name" id="l_name" placeholder="Your Last Name" />
-                                <span style="color: red;"></span>
+                                <small style="color: red;" id="error_l_name"></small>
+
                             </div>
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
                                 <input type="email" name="email" id="email" placeholder="Your Email" />
-                                <span style="color: red;"></span>
+                                <small style="color: red;" id="error_email">{{form.errors.email}}</small>
+
                             </div>
 
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="username" id="username" placeholder="Your USername" />
-                                <span style="color: red;"></span>
+                                <small style="color: red;" class="error_username">{{form.errors.username}}</small>
+
                             </div>
 
                             <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
                                 <input type="password" name="password1" id="password1" placeholder="Password" />
-                                <span style="color: red;"></span>
+                                <small style="color: red;" id="error_password1">{{form.errors.password1}}</small>
+
 
                             </div>
                             <div class="form-group">
                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
                                 <input type="password" name="password2" id="password2"
                                     placeholder="Repeat your password" />
-                                <span style="color: red;"></span>
+                                <small style="color: red;" id="error_password2">{{form.errors.password2}}</small>
+
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
@@ -61,8 +65,7 @@
                                     statements in <a href="#" class="term-service">Terms of service</a></label>
                             </div>
                             <div class="form-group form-button">
-                                <input type="submit" id="signup" class="form-submit" onclick="errorMessage()"
-                                    value="Register" />
+                                <input type="submit" id="signup" class="form-submit" value="Register" />
                             </div>
                         </form>
                     </div>
@@ -79,17 +82,18 @@
     <script src="{% static 'enroll/jss/main.js' %}"></script>
 
     <script>
-
         function validate() {
-            if (document.registerForm.f_name.value == " ") {
-                alert("Please provide your name!");
+            isDataVerify = false
+            const form = document.querySelector("form");
+            for (let i = 0; i < form.elements.length; i++) {
+                if (form.elements[i].value == '' || form.elements[i].value == undefined) {
+                    $("#error_" + form.elements[i].id).html("This Field is required")
+                }
+                else {
+                    isDataVerify = true
+                }
             }
-            if (document.registerForm.l_name.value == " ") {
-                alert("Please provide your name!");
-            }
-            if (document.registerForm.username.value == " ") {
-                alert("Please provide your name!");
-            }
+            return isDataVerify
         }
     </script>
 
